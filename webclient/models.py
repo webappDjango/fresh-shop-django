@@ -16,5 +16,20 @@ class User(models.Model):
         try:
             user = User.objects.get(email=email, password=password)
         except:
-            user = None
+            user = "email or password is wrong"
         return user
+
+    def Sign_up(username: str, email: str, password: str, phone: str):
+        avatar = "webclient\\Defaut-avatar.jpg"
+        user = User()
+        user.username = username
+        user.email = email
+        user.password = password
+        user.phone = phone
+        user.avatar = avatar
+        if User.objects.filter(email=email).count() > 0:
+            return "This email have been used"
+        else:
+            user.save(True)
+        return "Successfully"
+    
