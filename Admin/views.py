@@ -3,10 +3,16 @@ from django.http import HttpRequest, HttpResponseRedirect, JsonResponse, HttpRes
 from Admin.models import admin
 from product import models
 
+def _CheckAccessing(request: HttpRequest):
+    if "AdminId" in request.POST:
+        return request.POST["AdminId"]
+    else:
+        return None
 # Create your views here.
 def index(request:HttpRequest):
-    if not request.session.get("UserId"):
-        return HttpResponseRedirect("Login")
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     return allProduct(request)
 
 def Check(request: HttpRequest):
@@ -14,23 +20,37 @@ def Check(request: HttpRequest):
     password = request.POST["password"]
     ad = admin.CheckLogin(email, password)
     if ad is not None:
-        request.session['UserId'] = ad.id
+        request.session['AdminId'] = ad.id
     return HttpResponseRedirect("Login")
 
 def Login(request: HttpRequest):
-    if request.session.get("UserId"):
+    if _CheckAccessing(request):
         return HttpResponseRedirect("index")
-    return render(request, "login.html")
+        
+    if "error" in request.GET:
+        error = request.GET["error"]
+    else:
+        error = ""
+    return render(request, "login.html", {"error":error})
 
 def addProduct(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     categories = models.Category.objects.all()
     return render(request, "addProduct.html", {"categories":categories})
 
 def allCategory(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     categories = models.Category.objects.all()
     return render(request, "allCategory.html", {"categories":categories})
 
 def addCategory(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     if "Add" in request.GET:
         nameCate = request.GET["name"]
         models.Category.Add(nameCate)
@@ -38,6 +58,9 @@ def addCategory(request: HttpRequest):
     return render(request, "addCategory.html", {"categories":categories})
 
 def editCategory(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     if "Delete" in request.GET:
         id = request.GET["id"]
         models.Category.Delete(id)
@@ -49,11 +72,17 @@ def editCategory(request: HttpRequest):
     return render(request, "editCategory.html", {"categories":categories})
 
 def allProduct(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     categories = models.Category.objects.all()
     products = models.Product.objects.all()
     return render(request, "allProduct.html", {"categories":categories, "products":products})
 
 def addProduct(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     if "Add" in request.GET:
         name = request.GET["name"]
         cate_id = request.GET["cate_id"]
@@ -67,6 +96,9 @@ def addProduct(request: HttpRequest):
     return render(request, "addProduct.html", {"categories":categories, "products":products})
 
 def editProduct(request: HttpRequest):
+    if _CheckAccessing(request) is None:
+        return HttpResponseRedirect("Login?error=Sign in first")
+
     if "Delete" in request.GET:
         models.Product.objects.filter(id=request.GET["id"]).delete()
     if "Edit" in request.GET:

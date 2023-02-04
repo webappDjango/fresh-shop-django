@@ -114,7 +114,9 @@
                       <input type="password" name="password" id="form3Example4c" class="form-control" />
                     </div>
                   </div>
-
+                  {% if error %}
+                  <div class="alert alert-warning" role="alert">{{error}}</div>
+                  {% endif %}
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                     <button type="submit" class="btn btn-primary btn-lg">Sign in</button>
                   </div>
