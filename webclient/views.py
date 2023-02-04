@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponseRedirect
-from product import models
+from product import models as productModels
 from webclient import models
 
 def _CheckAccessing(request: HttpRequest):
@@ -18,14 +18,25 @@ def contact_us(request: HttpRequest):
     return render(request, "webclient/contact-us.html")
 
 def shop(request: HttpRequest):
-    products = models.Product.objects.all()
+    productsPerPage = 12
+
+    if "page" in request.GET:
+        page = request.GET["page"]
+    else:
+        page = 1
+    
+    if productModels.Product.objects.count() > (page-1)*productsPerPage:
+        begin = (page-1)*productsPerPage
+        if productModels.Product.objects.count() > (page * productsPerPage):
+            end = page * productsPerPage
+        else:
+            end = productModels.Product.objects.count()
+    else:
+        begin = 0
+        end = productsPerPage
+
+    products = productModels.Product.objects.all().order_by("id")[begin: end]
     return render(request, "webclient/shop.html", {"products": products})
-
-def gallery(request: HttpRequest):
-    return render(request, "webclient/gallery.html")
-
-def shop_detail(request: HttpRequest):
-    return render(request, "webclient/shop-detail.html")
 
 def about(request: HttpRequest):
     return render(request, "webclient/about.html")

@@ -1,7 +1,8 @@
 
 from django.urls import include,path
-from Admin import views
+from product import views
 
 urlpatterns = [
-    #path('', views.index),
+    path('Detail', views.gallery),
+    path('Shop-detail', views.shop_detail),
 ]

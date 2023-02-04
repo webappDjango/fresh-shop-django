@@ -9,10 +9,8 @@ urlpatterns = [
     path('cart', views.cart),
     path('checkout', views.checkout),
     path('contact_us', views.contact_us),
-    path('gallery', views.gallery),
-    path('my_account', views.my_account),
-    path('shop_detail', views.shop_detail),
+    path('my-account', views.my_account),
     path('wishlist', views.wishlist),
-    path('sign_up', views.sign_up),
-    path('sign_in', views.sign_in),
+    path('sign-up', views.sign_up),
+    path('sign-in', views.sign_in),
 ]
