@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import RegexValidator
-
+from product.models import Product
 
 class User(models.Model):
     id = models.AutoField(primary_key=True)
@@ -19,7 +19,7 @@ class User(models.Model):
             user = "email or password is wrong"
         return user
 
-    def Sign_up(username: str, email: str, password: str, phone: str):
+    def Sign_up(username: str, email: str, password: str, repassword: str, phone: str):
         avatar = "webclient\\Defaut-avatar.jpg"
         user = User()
         user.username = username
@@ -31,5 +31,19 @@ class User(models.Model):
             return "This email have been used"
         else:
             user.save(True)
+            cart = Cart(user=user)
+            cart.save(True)
         return "Successfully"
     
+class Cart(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete= models.CASCADE, related_name="cart")
+    products = models.ManyToManyField(Product, blank=True, related_name="carts")
+
+    def AddtoCart(self, product: Product):
+        if self.products.filter(id = product.id).count() == 0:
+            self.products.add(product)
+            return "Successfully! Added product to your cart."
+        else:
+            return "Failed! This product have been in your cart."
+        

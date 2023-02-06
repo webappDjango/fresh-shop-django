@@ -1,0 +1,12 @@
+{% extends 'webclient/Base/Base.html' %}
+
+{% block message %}
+{% if AddtoCart %}
+
+<section style="position: fixed; display: block; top: 100vh; margin: -50px 0 0 0; width: 100vw;">
+    <div class="alert alert-info" role="alert" style="text-align: center">
+        {{message}}
+    </div>
+</section>
+{% endif %}
+{% endblock message %}

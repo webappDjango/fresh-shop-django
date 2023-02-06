@@ -13,4 +13,6 @@ urlpatterns = [
     path('wishlist', views.wishlist),
     path('sign-up', views.sign_up),
     path('sign-in', views.sign_in),
+    
+    path('AddtoCart', views.AddtoCart),
 ]

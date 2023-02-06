@@ -73,7 +73,7 @@ def sign_up(request: HttpRequest):
 
         result = models.User.Sign_up(username, email, password,repassword, phone)
         if result == "Successfully":
-            return HttpResponseRedirect("sign_in")
+            return HttpResponseRedirect("sign-in")
         else:
             return render(request, "webclient/sign-up.html", {"error": result})
     return render(request, "webclient/sign-up.html")
@@ -84,7 +84,7 @@ def sign_in(request: HttpRequest):
         password = request.POST["password"]
 
         result = models.User.CheckLogin(email, password)
-        if result is models.User:
+        if type(result) is models.User:
             request.session['UserId'] = result.id
             return HttpResponseRedirect("index")
         else:
@@ -94,3 +94,12 @@ def sign_in(request: HttpRequest):
     else:
         error = ""
     return render(request, "webclient/sign-in.html", {"error": error})
+
+# Ajax
+def AddtoCart(request: HttpRequest):
+    user = models.User.objects.get(id = request.session['UserId'])
+    userCart = user.cart
+    userCart : models.Cart
+    product_id = request.GET["product_id"]
+    message = userCart.AddtoCart(models.Product.objects.get(id=product_id))
+    return render(request, "webclient/Ajax/ajax.html", {"AddtoCart":1, "message":message})

@@ -133,7 +133,7 @@
                                 <li><a href="/wishlist">Wishlist</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/Product/gallery">Gallery</a></li>
                         <li class="nav-item"><a class="nav-link" href="contact-us.html">Contact Us</a></li>
                     </ul>
                 </div>
@@ -198,6 +198,9 @@
         </div>
     </div>
     <!-- End Top Search -->
+    {% block message %}
+    {% endblock message %}
+    
     {% block content %}
     {% endblock content %}
     <!-- Start Instagram Feed  -->
@@ -367,12 +370,13 @@
                             </ul>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </footer>
     <!-- End Footer  -->
-
+    <div id="message"></div>
     <!-- Start copyright  -->
     <div class="footer-copyright">
         <p class="footer-company">All Rights Reserved. &copy; 2018 <a href="#">ThewayShop</a> Design By :
@@ -398,6 +402,7 @@
     <script src="/static/webclient/js/form-validator.min.js"></script>
     <script src="/static/webclient/js/contact-form-script.js"></script>
     <script src="/static/webclient/js/custom.js"></script>
+    <script src="/static/webclient/Myjs/Shop.js"></script>
 </body>
 
 </html>
